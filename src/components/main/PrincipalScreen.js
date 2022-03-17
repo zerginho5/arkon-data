@@ -1,3 +1,6 @@
+/*Pantalla que funciona como la "vista madre" de la app, mostrando los componentes correspondientes
+según el valor de la url actual, usando el hook de useParams, con lo cual muestra o no los componentes, 
+lo que elimina la necesidad de recargar la página al navegar entre las pantallas. */
 import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router';
 import { InicioScreen } from './InicioScreen';

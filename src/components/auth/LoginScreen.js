@@ -1,3 +1,8 @@
+/*Pantalla inicial que aparece al entrar a la app. 
+El método de inicio de sesión mediante cuenta de Google está habilitado usando un dispatch personalizado. 
+En caso contrario, también es posible ingresar mediante un usuario personalizado creado desde la consola de Firebase. 
+
+*/
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -5,25 +10,23 @@ import {
     startGoogleLogin
 } from '../../actions/auth';
 import logo from '../../imgs/logo.png'
-import { useParams } from 'react-router';
 export const LoginScreen = () => {
     const dispatch = useDispatch();
+    //Variable que muestra el state del reducer. 
     const { loading } = useSelector(state => state.ui);
+    //Variable que muestra la contraseña como texto o como caracteres ocultos. 
     const [passShowedLogin, setPassShowedLogin] = useState(false)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    //Método que hace el dispatch para comenzar con el inicio de sesión mediante usuario personalizado. 
     const handleLogin = (e) => {
         e.preventDefault();
         dispatch(startLoginEmailPassword(email, password));
     }
-    /*const pushToRoute = route => {
-        history.push(route)
-    }*/
+    //Método que hace el dispatch para comenzar con el inicio de sesión mediante cuenta de Google 
     const handleGoogleLogin = () => {
         dispatch(startGoogleLogin());
     }
-
-
     return (
         <>
             <div className="container-fluid h-100">

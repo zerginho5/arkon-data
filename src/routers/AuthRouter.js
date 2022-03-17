@@ -1,3 +1,4 @@
+///Router que verifica el estado de la sesión, en caso de que no esté iniciada, redirigirá al login. 
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 

@@ -1,3 +1,4 @@
+//Router que protege el acceso a las rutas privadas, verificando antes el estado de la sesión.
 import React from 'react';
 import PropTypes from 'prop-types';
 

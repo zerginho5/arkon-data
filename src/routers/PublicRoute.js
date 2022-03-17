@@ -1,3 +1,5 @@
+//Router que protege el acceso a las rutas públicas, verificando antes el estado de la sesión y, en caso de que haya una 
+//sesión activa, se redirigirá al inicio. 
 import React from 'react';
 import PropTypes from 'prop-types';
 

@@ -1,3 +1,17 @@
+/*Pantalla que funciona como el menú principal de la app, donde se muestran las funciones disponibles para modificar las tareas. 
+
+Se utiliza axios para las conexiones con el api. 
+A su vez, la pantalla se divide en dos interfaces:
+1.- Formulario que se muestra al añadir una tarea o modificar alguna existente. 
+2.- Pantalla que muestra las tareas mediante un listado separado por dos tipos: completadas y existentes. 
+
+Las acciones que pueden realizarse son: 
+1.- Iniciar, detener, reiniciar, eliminar, añadir, completar o modificar una tarea.
+
+El conteo de los minutos se realiza mediante un setInterval que va aumentando la cantidad de los minutos que lleva corriendo una tarea. 
+El mismo se pondrá en marcha en la primer tarea que tenga un estatus de I o iniciada. 
+
+*/
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import axios from "axios";
@@ -7,6 +21,8 @@ export const InicioScreen = () => {
         getTareas()
     }, [])
     const [tareas, setTareas] = useState([])
+    /*useEfect que es activado cuando el arreglo de tareas cambia su valor, asegurando así que el valor del temporizador
+    sea aumentado correctamente. */
     useEffect(() => {
         timer.current = setInterval(() => {
             const idx = tareas.find((val) => val.estatus == 'I')
@@ -31,6 +47,7 @@ export const InicioScreen = () => {
             .then((res) => initCounter(res.data))
             .catch((err) => console.log(err));
     }
+    //Método que crea o modifica una tarea existente. (Utilizado en la subpantalla de añadir/modificar tarea)
     const createTarea = async () => {
         if (tempObj) {
             const item = {
@@ -65,18 +82,21 @@ export const InicioScreen = () => {
 
     }
     const timer = useRef(null);
+    //Método que modifica una tarea existente. 
     const updateTarea = async (val) => {
         const id = val.id
         delete val.id
         axios.put(baseURL + id + "/", val)
             .then((res) => getTareas());
     }
+    //Método que elimina una tarea existente. 
     const deleteTarea = async (val) => {
         const id = val.id
         console.log(id)
         axios.delete(baseURL + id + "/")
             .then((res) => getTareas());
     }
+    //Método que cumple la función de un "respaldo" al contador dentro del useEffect. 
     const initCounter = (arrTareas) => {
         const idx = arrTareas.find((val) => val.estatus == 'I')
         if (idx) {
@@ -87,11 +107,14 @@ export const InicioScreen = () => {
             if (timer.current !== null) clearInterval(timer.current);
         };
     }
+    //Método que reinicia los valores iniciales de descripción, fechafin y duración.
     const resetValues = () => {
         setDesc("")
         setFechaFin("")
         setDuracion("")
     }
+    /*Método que inicializa un objeto temporal, que será la tarea a modificar, y los valores del formulario con los del objeto.
+    A su vez, activa la bandera para mostrar el formulario de añadir/modificar tarea*/
     const toggleEdit = (obj) => {
         setTemp(obj)
         setDesc(obj.descripcion)
@@ -99,11 +122,15 @@ export const InicioScreen = () => {
         setDuracion(obj.duracion)
         setAdding(true)
     }
+    /*Método que elimina el objeto temporal para modificaciones.
+    A su vez, activa la bandera para mostrar el formulario de añadir/modificar tarea y reinicia los valores del formulario*/
     const toggleAdd = () => {
         setTemp(undefined)
         setAdding(true)
         resetValues()
     }
+    /*Método que elimina el objeto temporal para modificaciones.
+    A su vez, desactiva la bandera para mostrar el formulario de añadir/modificar tarea y reinicia los valores del formulario*/
     const toggleClose = () => {
         setTemp(undefined)
         setAdding(false)
